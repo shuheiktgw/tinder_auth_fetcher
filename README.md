@@ -1,10 +1,14 @@
 # TinderAuthFetcher
 
 TinderAuthFetcher is inspired by [@andrewpeterprifer](https://github.com/andrewpeterprifer)'s [tinder-token-retriever](https://github.com/andrewpeterprifer/tinder-token-retriever) written in Python.
+
 Thank you Andrew! :smile:
 
 ## Description
 The TinderAuthFetcher library is used for fetching Facebook auth token to use Tinder API. TinderAuthFetcher automatically crawls Facebook and retrieves the token which is necessary to send a request to Tinder API. More information about Tinder API is [here](https://gist.github.com/rtt/10403467).
+
+## Dependencies
+- [Mechanize](https://github.com/sparklemotion/mechanize)
 
 ## Installation
 

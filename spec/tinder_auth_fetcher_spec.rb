@@ -5,7 +5,9 @@ RSpec.describe TinderAuthFetcher do
     expect(TinderAuthFetcher::VERSION).not_to be nil
   end
 
-  it "does something useful" do
-    expect(false).to eq(true)
+  describe '#self.fetch_token' do
+    it 'should raise Runtime Error if wrong email or password given' do
+      expect { TinderAuthFetcher.fetch_token('wrong email', 'wrong_password') }.to raise_error(RuntimeError, 'Facebook login failed. Check if you passed correct email and password')
+    end
   end
 end

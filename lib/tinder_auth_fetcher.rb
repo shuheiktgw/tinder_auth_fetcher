@@ -16,15 +16,13 @@ module TinderAuthFetcher
     confirmed.content.match(/access_token=(\w+)&expires_in=/)[1]
   end
 
-  private
-
-  def prepare_agent
+  def self.prepare_agent
     agent = Mechanize.new
     agent.user_agent = USER_AGENT
     agent
   end
 
-  def login(email, password)
+  def self.login(email, password)
     agent = prepare_agent
     page = agent.get(URI)
 
@@ -34,15 +32,17 @@ module TinderAuthFetcher
 
     res = agent.submit f
 
-    if res.uri.path == '/login/'
+    if res.uri.path.start_with? '/login'
       raise 'Facebook login failed. Check if you passed correct email and password'
     end
 
     res
   end
 
-  def confirm(logged_in)
+  def self.confirm(logged_in)
     confirm = logged_in.forms[0]
     confirm.click_button(confirm.button_with(name: '__CONFIRM__'))
   end
+
+  private_class_method :prepare_agent, :login, :confirm
 end
