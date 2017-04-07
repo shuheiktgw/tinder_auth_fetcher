@@ -33,7 +33,7 @@ module TinderAuthFetcher
     res = agent.submit f
 
     if res.uri.path.start_with? '/login'
-      raise 'Facebook login failed. Check if you passed correct email and password'
+      raise FacebookAuthenticationError 'Facebook Authentication failed. Check if you passed correct email and password'
     end
 
     res
@@ -46,3 +46,5 @@ module TinderAuthFetcher
 
   private_class_method :prepare_agent, :login, :confirm
 end
+
+class FacebookAuthenticationError < StandardError; end
