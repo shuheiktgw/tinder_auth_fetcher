@@ -40,7 +40,7 @@ Now all you need to do is just call #TinderAuthFetcher.fetch_token with target f
 token = TinderAuthFetcher.fetch_token(facebook_email, facebook_password)
 ```
 
-Notice that TinderAuthFetcher raises Runtime Error with the message "Facebook login failed. Check if you passed correct email and password" if it failed to log in, so you might want to deal with it. 
+**Notice**: TinderAuthFetcher raises "FacebookAuthenticationError" with the message "Facebook Authentication failed. Check if you passed correct email and password" if it failed to log in, so you might want to deal with it. 
 
 
 
