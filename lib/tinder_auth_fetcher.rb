@@ -33,7 +33,7 @@ module TinderAuthFetcher
     res = agent.submit f
 
     if res.uri.path.start_with? '/login'
-      raise FacebookAuthenticationError 'Facebook Authentication failed. Check if you passed correct email and password'
+      raise FacebookAuthenticationError, 'Facebook Authentication failed. Check if you passed correct email and password'
     end
 
     res
