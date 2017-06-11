@@ -10,7 +10,7 @@ RSpec.describe TinderAuthFetcher do
       expect { TinderAuthFetcher.fetch_token('wrong email', 'wrong_password') }.to raise_error(TinderAuthFetcher::FacebookAuthenticationError, 'Facebook Authentication failed. Check if you passed correct email and password')
     end
 
-    # You have to set environment variable TINDER_AUTH_EMAIL, TINDER_AUTH_PASSWORD with your valid Facebook email address and password
+    # You have to set environment variables TINDER_AUTH_EMAIL, TINDER_AUTH_PASSWORD with your valid Facebook email address and password
     #
     # ex:
     #

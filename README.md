@@ -28,6 +28,7 @@ Or install it yourself as:
 
 ## Usage
 First thing is first. Make sure that you've required tinder_auth_fetcher.
+$ gem install tinder_auth_fetcher
 
 
 ```ruby
@@ -40,9 +41,19 @@ Now all you need to do is just call #TinderAuthFetcher.fetch_token with target f
 token = TinderAuthFetcher.fetch_token(facebook_email, facebook_password)
 ```
 
-**Notice**: TinderAuthFetcher raises "FacebookAuthenticationError" with the message "Facebook Authentication failed. Check if you passed correct email and password" if it failed to log in, so you might want to deal with it. 
+**Notice**: TinderAuthFetcher raises `TinderAuthFetcher::FacebookAuthenticationError` with the message "Facebook Authentication failed. Check if you passed correct email and password" if it failed to log in, so you might want to deal with it. 
 
+## Test
+I wrote only two test cases, one that asserts it raises `TinderAuthFetcher::FacebookAuthenticationError` when it fails to fetch the token and the one which asserts it fetches the token correctly.
 
+First you have to provide valid Facebook email and password through environment variables.
+
+    $ export export TINDER_AUTH_EMAIL="you_facebook_email@gmail.com"
+    $ export TINDER_AUTH_PASSWORD="you_facebook_password"
+
+Then all you need to do is just runing the RSpec.
+
+    $ rspec
 
 ## Development
 
