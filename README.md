@@ -5,10 +5,7 @@ TinderAuthFetcher is inspired by [@andrewpeterprifer](https://github.com/andrewp
 Thank you Andrew! :smile:
 
 ## Description
-The TinderAuthFetcher library is used for fetching Facebook auth token to use Tinder API. TinderAuthFetcher automatically crawls Facebook and retrieves the token which is necessary to send a request to Tinder API. More information about Tinder API is [here](https://gist.github.com/rtt/10403467).
-
-## Dependencies
-- [Mechanize](https://github.com/sparklemotion/mechanize)
+TinderAuthFetcher is used for fetching Facebook auth token to use Tinder API. TinderAuthFetcher automatically crawls Facebook and retrieves the token which is necessary to send a request to Tinder API. More information about Tinder API is [here](https://gist.github.com/rtt/10403467).
 
 ## Installation
 
@@ -39,9 +36,7 @@ Now all you need to do is just call #TinderAuthFetcher.fetch_token with target f
 
 ```ruby
 token = TinderAuthFetcher.fetch_token(facebook_email, facebook_password)
-```
-
-**Notice**: TinderAuthFetcher raises `TinderAuthFetcher::FacebookAuthenticationError` with the message "Facebook Authentication failed. Check if you passed correct email and password" if it failed to log in, so you might want to deal with it. 
+``` 
 
 ## Test
 I wrote only two test cases, one that asserts it raises `TinderAuthFetcher::FacebookAuthenticationError` when it fails to fetch the token and the one which asserts it fetches the token correctly.

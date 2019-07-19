@@ -1,50 +1,24 @@
-require 'tinder_auth_fetcher/version'
-require 'mechanize'
-
 module TinderAuthFetcher
-  USER_AGENT = 'Mozilla/5.0 (Linux; U; en-gb; KFTHWI Build/JDQ39) AppleWebKit/535.19 (KHTML, like Gecko) Silk/3.16 Safari/535.19'
-  URI = 'https://www.facebook.com/v2.6/dialog/oauth?redirect_uri=fb464891386855067%3A%2F%2Fauthorize%2F&display=touch&state=%7B%22challenge%22%3A%22IUUkEUqIGud332lfu%252BMJhxL4Wlc%253D%22%2C%220_auth_logger_id%22%3A%2230F06532-A1B9-4B10-BB28-B29956C71AB1%22%2C%22com.facebook.sdk_client_state%22%3Atrue%2C%223_method%22%3A%22sfvc_auth%22%7D&scope=user_birthday%2Cuser_photos%2Cuser_education_history%2Cemail%2Cuser_relationship_details%2Cuser_friends%2Cuser_work_history%2Cuser_likes&response_type=token%2Csigned_request&default_audience=friends&return_scopes=true&auth_type=rerequest&client_id=464891386855067&ret=login&sdk=ios&logger_id=30F06532-A1B9-4B10-BB28-B29956C71AB1&ext=1470840777&hash=AeZqkIcf-NEW6vBd'
+  require 'selenium-webdriver'
+  require 'webdrivers'
 
-  class FacebookAuthenticationError < StandardError; end
+  URI = 'https://www.facebook.com/v2.6/dialog/oauth?redirect_uri=fb464891386855067%3A%2F%2Fauthorize%2F&scope=user_birthday%2Cuser_photos%2Cuser_education_history%2Cemail%2Cuser_relationship_details%2Cuser_friends%2Cuser_work_history%2Cuser_likes&response_type=token%2Csigned_request&client_id=464891386855067&ret=login&fallback_redirect_uri=221e1158-f2e9-1452-1a05-8983f99f7d6e&ext=1556057433&hash=Aea6jWwMP_tDMQ9y'
 
   def self.fetch_token(email, password)
-    # Login to the page
-    logged_in = login(email, password)
+    options = Selenium::WebDriver::Chrome::Options.new(
+      prefs: { 'profile.default_content_setting_values.notifications': 2 }
+    )
 
-    # Click OK
-    confirmed = confirm(logged_in)
+    driver = Selenium::WebDriver.for :chrome, options: options
 
-    # Retrieve token
-    confirmed.content.match(/access_token=(\w+)&expires_in=/)[1]
+    driver.navigate.to URI
+
+    driver.find_element(:id, 'email').send_keys(email)
+    driver.find_element(:id, 'pass').send_keys(password)
+    driver.find_element(:id, 'loginbutton').click
+
+    driver.find_element(:name, '__CONFIRM__').click
+
+    driver.page_source.match(/access_token=(\w+)&data_access_expiration_time=/)[1]
   end
-
-  def self.prepare_agent
-    agent = Mechanize.new
-    agent.user_agent = USER_AGENT
-    agent
-  end
-
-  def self.login(email, password)
-    agent = prepare_agent
-    page = agent.get(URI)
-
-    f = page.forms[0]
-    f.field_with(name: 'email').value = email
-    f.field_with(name: 'pass').value = password
-
-    res = agent.submit f
-
-    if res.uri.path.start_with? '/login'
-      raise TinderAuthFetcher::FacebookAuthenticationError, 'Facebook Authentication failed. Check if you passed correct email and password'
-    end
-
-    res
-  end
-
-  def self.confirm(logged_in)
-    confirm = logged_in.forms[0]
-    confirm.click_button(confirm.button_with(name: '__CONFIRM__'))
-  end
-
-  private_class_method :prepare_agent, :login, :confirm
 end
